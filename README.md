@@ -7,7 +7,7 @@ License: BSD-3-Clause license.
 
 Download: `https://github.com/ARMmbed/littlefs/releases`
 
-Version: 2.1.4
+Version: 2.2.1
 
 Example:
 

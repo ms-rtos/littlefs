@@ -26,7 +26,7 @@
 
 typedef struct {
     lfs_t           lfs;
-    ms_handle_t     lock;
+    ms_handle_t     lockid;
 } ms_lfs_t;
 
 static int __ms_littlefs_err_to_errno(int err)
@@ -204,13 +204,13 @@ static ms_uint8_t __ms_littlefs_file_type_to_type(ms_uint8_t type)
 
 static void __ms_little_fs_lock(ms_lfs_t *lfs)
 {
-    while (ms_mutex_lock(lfs->lock, MS_TIMEOUT_FOREVER) != MS_ERR_NONE) {
+    while (ms_mutex_lock(lfs->lockid, MS_TIMEOUT_FOREVER) != MS_ERR_NONE) {
     }
 }
 
 static void __ms_little_fs_unlock(ms_lfs_t *lfs)
 {
-    (void)ms_mutex_unlock(lfs->lock);
+    (void)ms_mutex_unlock(lfs->lockid);
 }
 
 static int __ms_littlefs_mount(ms_io_mnt_t *mnt, ms_io_device_t *dev, const char *dev_name, ms_const_ptr_t param)
@@ -222,7 +222,7 @@ static int __ms_littlefs_mount(ms_io_mnt_t *mnt, ms_io_device_t *dev, const char
         lfs = ms_kzalloc(sizeof(ms_lfs_t));
         if (lfs != MS_NULL) {
 
-            if (ms_mutex_create("lfs_lock", MS_WAIT_TYPE_PRIO, &lfs->lock) == MS_ERR_NONE) {
+            if (ms_mutex_create("lfs_lock", MS_WAIT_TYPE_PRIO, &lfs->lockid) == MS_ERR_NONE) {
 
                 ret = lfs_mount(&lfs->lfs, dev->ctx);
                 if (ret < 0) {
@@ -234,7 +234,7 @@ static int __ms_littlefs_mount(ms_io_mnt_t *mnt, ms_io_device_t *dev, const char
                 }
 
                 if (ret < 0) {
-                    (void)ms_mutex_destroy(lfs->lock);
+                    (void)ms_mutex_destroy(lfs->lockid);
                     ms_thread_set_errno(__ms_littlefs_err_to_errno(ret));
                     ret = -1;
 

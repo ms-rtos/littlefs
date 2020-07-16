@@ -6,7 +6,7 @@
  *
  * File: ms_littlefs.h littlefs implement.
  *
- * Author: Jiao.jinxing <jiaojixing@acoinfo.com>
+ * Author: Jiao.jinxing <jiaojinxing@acoinfo.com>
  *
  */
 

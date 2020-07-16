@@ -6,7 +6,7 @@
  *
  * File: ms_littlefs_cfg.h littlefs configuration.
  *
- * Author: Jiao.jinxing <jiaojixing@acoinfo.com>
+ * Author: Jiao.jinxing <jiaojinxing@acoinfo.com>
  *
  */
 

@@ -375,7 +375,7 @@ static ms_ssize_t __ms_littlefs_read(ms_io_mnt_t *mnt, ms_io_file_t *file, ms_pt
     ms_ssize_t ret;
 
     __ms_little_fs_lock(lfs);
-    ret = lfs_file_read(mnt->ctx, lfs_file, buf, len);
+    ret = lfs_file_read(&lfs->lfs, lfs_file, buf, len);
     __ms_little_fs_unlock(lfs);
 
     if (ret < 0) {
@@ -393,7 +393,7 @@ static ms_ssize_t __ms_littlefs_write(ms_io_mnt_t *mnt, ms_io_file_t *file, ms_c
     ms_ssize_t ret;
 
     __ms_little_fs_lock(lfs);
-    ret = lfs_file_write(mnt->ctx, lfs_file, buf, len);
+    ret = lfs_file_write(&lfs->lfs, lfs_file, buf, len);
     __ms_little_fs_unlock(lfs);
 
     if (ret < 0) {

@@ -292,7 +292,7 @@ static int __ms_littlefs_mkfs(ms_io_mnt_t *mnt, ms_const_ptr_t param)
     return ret;
 }
 
-static int __ms_littlefs_unmount(ms_io_mnt_t *mnt, ms_const_ptr_t param, ms_bool_t force)
+static int __ms_littlefs_unmount(ms_io_mnt_t *mnt, ms_const_ptr_t param)
 {
     ms_lfs_t *lfs = mnt->ctx;
     int ret;
@@ -301,7 +301,7 @@ static int __ms_littlefs_unmount(ms_io_mnt_t *mnt, ms_const_ptr_t param, ms_bool
     ret = lfs_unmount(&lfs->lfs);
     __ms_little_fs_unlock(lfs);
 
-    if (ret < 0) {
+    if ((ret < 0) && !mnt->umount_req) {
         ms_thread_set_errno(__ms_littlefs_err_to_errno(ret));
         ret = -1;
     } else {
@@ -356,7 +356,7 @@ static int __ms_littlefs_close(ms_io_mnt_t *mnt, ms_io_file_t *file)
     ret = lfs_file_close(&lfs->lfs, lfs_file);
     __ms_little_fs_unlock(lfs);
 
-    if (ret < 0) {
+    if ((ret < 0) && !mnt->umount_req) {
         ms_thread_set_errno(__ms_littlefs_err_to_errno(ret));
         ret = -1;
     } else {
@@ -745,7 +745,7 @@ static int __ms_littlefs_closedir(ms_io_mnt_t *mnt, ms_io_file_t *file)
     ret = lfs_dir_close(&lfs->lfs, lfs_dir);
     __ms_little_fs_unlock(lfs);
 
-    if (ret < 0) {
+    if ((ret < 0) && !mnt->umount_req) {
         ms_thread_set_errno(__ms_littlefs_err_to_errno(ret));
         ret = -1;
     } else {

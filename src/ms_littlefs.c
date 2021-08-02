@@ -776,7 +776,7 @@ static int __ms_littlefs_readdir_r(ms_io_mnt_t *mnt, ms_io_file_t *file, ms_dire
             *result = entry;
         }
 
-        ret = 1;
+        ret = 0;
 
     } else if (ret == 0) {
         if (result != MS_NULL) {
